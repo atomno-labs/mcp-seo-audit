@@ -97,9 +97,12 @@ All via environment variables:
 | `DETAILWEB_TIMEOUT` | `60` | HTTP timeout (seconds) |
 | `DETAILWEB_LANG` | `ru` | Default issue-title language (`ru` / `en`) |
 
-**Getting a PRO key:** sign in at [audit.detailweb.ru](https://audit.detailweb.ru)
-→ **Dashboard → Account → API keys** → create a key (`dwa_…`, shown once) and put
-it in `DETAILWEB_API_KEY`. The free tier works without any key.
+**The free tier needs no key and no signup** — just run the command above. The
+**PRO** tier (40+ deeper checks, GEO sub-score, deep-crawl, `audit_diff`) is
+currently provisioned on request: email **kir@detailweb.ru** or reach out via
+[audit.detailweb.ru](https://audit.detailweb.ru). Once your account is active you
+create keys yourself in **Dashboard → Account → API keys** (`dwa_…`, shown once)
+and put the key in `DETAILWEB_API_KEY`.
 
 ## Example
 
@@ -156,9 +159,10 @@ uvx atomno-mcp-seo-audit
 }
 ```
 
-PRO-режим (40+ глубоких проверок, GEO-суб-балл, deep-crawl до 20 страниц):
-добавьте `DETAILWEB_API_KEY` (`dwa_…`) в `env`. Ключ создаётся в кабинете
-[audit.detailweb.ru](https://audit.detailweb.ru) → **Аккаунт → API-ключи**
-(полный ключ показывается один раз). Без ключа работает бесплатный тариф
-(базовые проверки, одна страница). Полное описание инструментов и настроек —
-в английской версии выше.
+Бесплатный тариф (базовые проверки, одна страница) работает **сразу, без ключа
+и регистрации**. PRO-режим (40+ глубоких проверок, GEO-суб-балл, deep-crawl до
+20 страниц, `audit_diff`) пока выдаём по запросу: напишите на
+**kir@detailweb.ru** или через [audit.detailweb.ru](https://audit.detailweb.ru).
+После активации аккаунта ключ (`dwa_…`) создаётся в кабинете → **Аккаунт →
+API-ключи** (показывается один раз) и подставляется в `DETAILWEB_API_KEY` в
+`env`. Полное описание инструментов и настроек — в английской версии выше.
