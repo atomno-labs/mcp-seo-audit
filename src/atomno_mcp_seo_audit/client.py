@@ -69,6 +69,11 @@ class DetailWebClient:
         }
         return await self._post("/audit", payload)
 
+    async def audit_diff(self, url: str, *, lang: str | None = None) -> dict[str, Any]:
+        """POST /audit/diff — что изменилось с прошлой проверки (stateful, PRO)."""
+        payload = {"url": url, "lang": lang or self._settings.lang}
+        return await self._post("/audit/diff", payload)
+
     async def list_checks(self, *, lang: str | None = None) -> dict[str, Any]:
         """GET /checks — реестр проверок движка (free/pro, по категориям)."""
         return await self._get("/checks", params={"lang": lang or self._settings.lang})

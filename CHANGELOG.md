@@ -2,7 +2,15 @@
 
 All notable changes to this project are documented here.
 
-## [Unreleased]
+## [0.4.0] - 2026-06-23
+
+### Added
+- `audit_diff(url, lang)` tool — re-audits a site and compares it to the
+  previous saved snapshot: health/score delta and which checks got worse or
+  better (`from`→`to`). First call stores a baseline. Stateful PRO feature —
+  requires `DETAILWEB_API_KEY`; without it returns `available=false` + upsell.
+  This is the first piece of the monitoring track (idea I-4) and the concrete
+  answer to "why not just ask an LLM?" — an LLM can't track a site over time.
 
 ### Changed
 - Positioning «instrument, not a guess»: server `instructions` and the
@@ -13,7 +21,7 @@ All notable changes to this project are documented here.
   (`🇷🇺 На русском`) section for RU users.
 
 ### Planned
-- Stateful monitoring (`watch_site` + alerts, idea I-4) — see
+- Stateful monitoring (`watch_site` + scheduled alerts, idea I-4) — see
   `_knowledge/specs/monitoring.md`.
 
 ## [0.3.0] - 2026-06-23

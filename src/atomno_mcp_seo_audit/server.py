@@ -2,6 +2,7 @@
 
 Тулзы поверх публичного API `https://api.detailweb.ru`:
   - audit_site(url, depth, lang) — технический SEO-аудит (free / PRO по ключу);
+  - audit_diff(url, lang) — что изменилось с прошлой проверки (stateful, PRO);
   - list_checks(lang) — реестр проверок free/PRO по категориям;
   - explain_issue(check_id, lang) — почему важно + как исправить одну проверку;
   - validate_robots / check_sitemap / build_jsonld / build_meta — точечные тулзы.
@@ -29,6 +30,7 @@ from .errors import SeoAuditError
 from .formatting import (
     format_audit,
     format_checks,
+    format_diff,
     format_explain,
     format_jsonld,
     format_meta,
@@ -58,6 +60,9 @@ mcp: FastMCP = FastMCP(
         "(DETAILWEB_API_KEY env) you get the PRO tier: 40+ deeper checks "
         "(E-E-A-T, Schema.org, Goldmine title), the GEO readiness sub-score and "
         "deep-crawl up to 20 pages. Use lang='en' or lang='ru' for issue titles. "
+        "audit_diff(url) re-audits a site and compares it to the previous saved "
+        "snapshot (health/score delta, which checks got worse or better) — a "
+        "stateful PRO feature that a one-off LLM question cannot replicate. "
         "Other tools: list_checks() shows the full free/PRO check catalogue by "
         "category; explain_issue(check_id) returns a detailed why-it-matters and "
         "how-to-fix for a single check (ids come from audit_site or list_checks); "
@@ -126,6 +131,31 @@ async def audit_site(
         logger.warning("audit_site failed for %s: %s", url, exc)
         return {"error": str(exc), "url": url}
     return format_audit(raw)
+
+
+@mcp.tool
+async def audit_diff(
+    url: Annotated[str, Field(description="Полный URL сайта, например https://example.ru")],
+    lang: Annotated[
+        str,
+        Field(description="Язык заголовков: 'ru' или 'en'.", pattern="^(ru|en)$"),
+    ] = "ru",
+) -> dict[str, Any]:
+    """Сравнить сайт с прошлой проверкой: что улучшилось, что деградировало.
+
+    Прогоняет свежий аудит и сопоставляет с предыдущим сохранённым снимком того
+    же URL: дельта health/score и какие именно проверки стали хуже/лучше. Это то,
+    чего разовый вопрос к LLM не умеет — отслеживание сайта во времени. Первый
+    вызов сохраняет базовую точку (сравнивать ещё не с чем). Stateful PRO-функция:
+    нужен DETAILWEB_API_KEY — без него available=false и подсказка про PRO.
+    """
+    client = await _get_client()
+    try:
+        raw = await client.audit_diff(url, lang=lang)
+    except SeoAuditError as exc:
+        logger.warning("audit_diff failed for %s: %s", url, exc)
+        return {"error": str(exc), "url": url}
+    return format_diff(raw, lang=lang)
 
 
 @mcp.tool

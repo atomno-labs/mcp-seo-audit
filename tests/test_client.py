@@ -72,6 +72,21 @@ async def test_network_error_maps():
 
 
 @respx.mock
+async def test_audit_diff_posts_url_and_lang():
+    payload = {"url": "https://example.com", "lang": "ru", "available": True, "first_run": True}
+    route = respx.post(f"{BASE}/audit/diff").mock(return_value=httpx.Response(200, json=payload))
+    client = DetailWebClient(_settings(api_key="dwa_secret"))
+    try:
+        data = await client.audit_diff("https://example.com", lang="ru")
+    finally:
+        await client.aclose()
+    assert data["available"] is True
+    body = route.calls.last.request.content
+    assert b'"url"' in body
+    assert route.calls.last.request.headers["authorization"] == "Bearer dwa_secret"
+
+
+@respx.mock
 async def test_list_checks_get_with_lang():
     payload = {"lang": "en", "total": 2, "free_count": 1, "pro_count": 1, "categories": []}
     route = respx.get(f"{BASE}/checks").mock(return_value=httpx.Response(200, json=payload))

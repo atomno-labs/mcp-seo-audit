@@ -29,6 +29,10 @@ that interprets the readout. Best results come from the two together.
   - issues grouped by category (security, SEO & indexing, performance, GEO, …),
     each with status `pass / warn / fail`;
   - a short human-readable summary.
+- **`audit_diff(url, lang="ru")`** — re-audits a site and compares it to the
+  previous run: health/score delta and which checks got worse or better. The
+  first call stores a baseline. This is something a one-off LLM question can't
+  do — track a site over time. Stateful **PRO** feature (needs an API key).
 - **`list_checks(lang="ru")`** — the full catalogue of engine checks grouped by
   category, with a `free` / `PRO` badge on each — so you (and the agent) can see
   exactly what the free tier covers and what PRO unlocks.
@@ -123,7 +127,8 @@ MCP-сервер технического SEO-аудита на движке [de
 клиенту. Это прибор; нейросеть — аналитик, который читает показания. Лучше всего
 работает связка.
 
-**Инструменты:** `audit_site` (аудит + score + GEO), `list_checks` (каталог
+**Инструменты:** `audit_site` (аудит + score + GEO), `audit_diff` (что
+изменилось с прошлой проверки — stateful PRO), `list_checks` (каталог
 проверок free/PRO), `explain_issue` (почему важно + как исправить),
 `validate_robots`, `check_sitemap`, `build_jsonld`, `build_meta`.
 

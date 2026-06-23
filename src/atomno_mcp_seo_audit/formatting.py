@@ -84,6 +84,61 @@ def _summary_text(r: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def format_diff(resp: dict[str, Any], *, lang: str = "ru") -> dict[str, Any]:
+    """Ответ /audit/diff → структура + summary_text (что изменилось)."""
+    en = (resp.get("lang") or lang) == "en"
+    result = dict(resp)
+    lines: list[str] = []
+
+    if not resp.get("available"):
+        lines.append(resp.get("upsell") or ("Diff requires a PRO key." if en else "Дифф требует PRO-ключ."))
+        result["summary_text"] = "\n".join(lines)
+        return result
+
+    url = resp.get("url")
+    cur = resp.get("current") or {}
+    if resp.get("first_run"):
+        head = f"{url} — health {cur.get('health')}/100"
+        if cur.get("grade"):
+            head += f" ({cur['grade']})"
+        lines.append(head)
+        lines.append(resp.get("message") or ("Baseline saved." if en else "Базовая точка сохранена."))
+        result["summary_text"] = "\n".join(lines)
+        return result
+
+    prev = resp.get("previous") or {}
+    sd = resp.get("score_delta")
+    hd = resp.get("health_delta")
+    head = f"{url} — health {prev.get('health')} → {cur.get('health')}"
+    if hd is not None:
+        arrow = "▲" if hd > 0 else ("▼" if hd < 0 else "=")
+        head += f" ({arrow}{abs(hd) if hd else 0})"
+    lines.append(head)
+    if sd is not None and sd != 0:
+        lines.append(
+            (f"problem score {prev.get('score')} → {cur.get('score')}" if en
+             else f"проблемность {prev.get('score')} → {cur.get('score')}")
+        )
+
+    worsened = resp.get("worsened") or []
+    improved = resp.get("improved") or []
+    if worsened:
+        lines.append("")
+        lines.append("Worsened:" if en else "Стало хуже:")
+        for c in worsened:
+            lines.append(f"  ❌ [{c.get('category')}] {c.get('title')} ({c.get('from')}→{c.get('to')})")
+    if improved:
+        lines.append("")
+        lines.append("Improved:" if en else "Стало лучше:")
+        for c in improved:
+            lines.append(f"  ✅ [{c.get('category')}] {c.get('title')} ({c.get('from')}→{c.get('to')})")
+    if not worsened and not improved:
+        lines.append(resp.get("message") or ("No changes since last run." if en else "Изменений нет."))
+
+    result["summary_text"] = "\n".join(lines)
+    return result
+
+
 def format_checks(resp: dict[str, Any]) -> dict[str, Any]:
     """Реестр проверок /checks → компактная структура + summary_text."""
     en = resp.get("lang") == "en"

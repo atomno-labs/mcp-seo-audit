@@ -5,6 +5,7 @@ from __future__ import annotations
 from atomno_mcp_seo_audit.formatting import (
     format_audit,
     format_checks,
+    format_diff,
     format_explain,
     format_jsonld,
     format_meta,
@@ -116,6 +117,50 @@ def test_format_explain_en_notes_ru_advice():
 def test_format_explain_not_found():
     out = format_explain({"id": "zzz", "found": False, "lang": "ru"}, lang="ru")
     assert "Неизвестная проверка: zzz" in out["summary_text"]
+
+
+def test_format_diff_unavailable_shows_upsell():
+    resp = {"url": "https://x.ru", "lang": "ru", "available": False, "upsell": "Нужен PRO-ключ"}
+    out = format_diff(resp)
+    assert "Нужен PRO-ключ" in out["summary_text"]
+
+
+def test_format_diff_first_run():
+    resp = {
+        "url": "https://x.ru", "lang": "ru", "available": True, "first_run": True,
+        "current": {"health": 90, "grade": "A", "score": 10},
+        "message": "Сохранил базовую точку — сравнивать пока не с чем.",
+    }
+    out = format_diff(resp)
+    assert "health 90/100" in out["summary_text"]
+    assert "базовую точку" in out["summary_text"]
+
+
+def test_format_diff_with_changes():
+    resp = {
+        "url": "https://x.ru", "lang": "ru", "available": True, "first_run": False,
+        "current": {"health": 80, "score": 20}, "previous": {"health": 90, "score": 10},
+        "score_delta": 10, "health_delta": -10,
+        "worsened": [{"id": "hsts", "category": "security", "title": "HSTS", "from": "pass", "to": "fail"}],
+        "improved": [{"id": "title", "category": "seo", "title": "Title", "from": "warn", "to": "pass"}],
+        "unchanged": 20, "message": "С прошлого прогона: 1 проверок хуже, 1 лучше.",
+    }
+    out = format_diff(resp)
+    txt = out["summary_text"]
+    assert "90 → 80" in txt
+    assert "Стало хуже:" in txt and "HSTS" in txt
+    assert "Стало лучше:" in txt and "Title" in txt
+
+
+def test_format_diff_en_no_changes():
+    resp = {
+        "url": "https://x.ru", "lang": "en", "available": True, "first_run": False,
+        "current": {"health": 90}, "previous": {"health": 90},
+        "score_delta": 0, "health_delta": 0, "worsened": [], "improved": [], "unchanged": 30,
+        "message": "No changes since the previous run.",
+    }
+    out = format_diff(resp, lang="en")
+    assert "No changes" in out["summary_text"]
 
 
 def test_format_robots_valid_and_issues():
