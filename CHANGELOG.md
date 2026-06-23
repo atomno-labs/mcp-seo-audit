@@ -9,8 +9,8 @@ All notable changes to this project are documented here.
   previous saved snapshot: health/score delta and which checks got worse or
   better (`from`→`to`). First call stores a baseline. Stateful PRO feature —
   requires `DETAILWEB_API_KEY`; without it returns `available=false` + upsell.
-  This is the first piece of the monitoring track (idea I-4) and the concrete
-  answer to "why not just ask an LLM?" — an LLM can't track a site over time.
+  First piece of the monitoring track (idea I-4): tracking a site's state over
+  time is something a one-off prompt can't do — it needs stored history.
 
 ### Changed
 - Positioning «instrument, not a guess»: server `instructions` and the

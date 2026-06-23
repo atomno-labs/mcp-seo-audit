@@ -6,21 +6,21 @@
 [![MCP](https://img.shields.io/badge/MCP-server-blue)](https://modelcontextprotocol.io)
 
 MCP (Model Context Protocol) server for **technical SEO audits**, powered by the
-[detail.web](https://detailweb.ru) engine. Run a site audit straight from your
-AI agent in Cursor, Claude Desktop or any MCP client — get a health score,
+[detail.web](https://audit.detailweb.ru) engine. Run a site audit straight from
+your AI agent in Cursor, Claude Desktop or any MCP client — get a health score,
 issues across 8 categories, and a **GEO** (Generative Engine Optimization —
 visibility in AI search) sub-score.
 
-## Why not just ask an LLM to "analyze my site"?
+## Why pair it with an LLM?
 
-Because a language model **guesses** — it can't read your TLS certificate's
-expiry date, measure response time, parse your `sitemap.xml`, or detect that
-`GPTBot` is blocked in `robots.txt`. Without tools it hallucinates from the URL;
-with browsing it eyeballs one rendered page. This server **measures**: real HTTP
-requests, security headers, redirect chains, structured-data validation — and
-returns a **deterministic** score (same site → same number), reproducible enough
-to put in a client report. Think of it as the instrument; the LLM is the analyst
-that interprets the readout. Best results come from the two together.
+A language model on its own infers a site from training data and, at best, one
+rendered page — it can't directly read your TLS certificate's expiry, measure
+response time, parse `sitemap.xml`, or check whether `GPTBot` is blocked in
+`robots.txt`. This server runs those checks for real: actual HTTP requests,
+security headers, redirect chains, structured-data validation — and returns a
+**deterministic** score (same site → same number), reproducible enough to put in
+a client report. Think of it as the instrument and the LLM as the analyst that
+interprets the readout — the two work best together.
 
 ## What you get
 
@@ -97,7 +97,9 @@ All via environment variables:
 | `DETAILWEB_TIMEOUT` | `60` | HTTP timeout (seconds) |
 | `DETAILWEB_LANG` | `ru` | Default issue-title language (`ru` / `en`) |
 
-Get a PRO key in the detail.web dashboard → Account → API keys.
+**Getting a PRO key:** sign in at [audit.detailweb.ru](https://audit.detailweb.ru)
+→ **Dashboard → Account → API keys** → create a key (`dwa_…`, shown once) and put
+it in `DETAILWEB_API_KEY`. The free tier works without any key.
 
 ## Example
 
@@ -114,18 +116,20 @@ MIT © atomno-labs. The open-source client talks to a proprietary hosted backend
 
 ## 🇷🇺 На русском
 
-MCP-сервер технического SEO-аудита на движке [detail.web](https://detailweb.ru).
-Запускайте аудит прямо из ИИ-агента (Cursor, Claude Desktop и любой MCP-клиент):
-**health-score**, проблемы по 8 категориям и **GEO**-суб-балл (видимость в
-ИИ-поиске — ChatGPT, Perplexity, AI Overviews).
+MCP-сервер технического SEO-аудита на движке
+[detail.web](https://audit.detailweb.ru). Запускайте аудит прямо из ИИ-агента
+(Cursor, Claude Desktop и любой MCP-клиент): **health-score**, проблемы по 8
+категориям и **GEO**-суб-балл (видимость в ИИ-поиске — ChatGPT, Perplexity,
+AI Overviews).
 
-**Чем отличается от «спросить нейросеть».** Языковая модель *гадает*: она не
-прочитает срок вашего SSL-сертификата, не измерит время ответа, не распарсит
-`sitemap.xml` и не увидит, что `GPTBot` заблокирован в `robots.txt`. Этот сервер
-*измеряет* — настоящие HTTP-запросы, заголовки, редиректы, микроразметка — и даёт
-**детерминированный** score (тот же сайт → то же число), пригодный для отчёта
-клиенту. Это прибор; нейросеть — аналитик, который читает показания. Лучше всего
-работает связка.
+**Зачем в связке с нейросетью.** Языковая модель сама по себе судит о сайте по
+обучающим данным и в лучшем случае по одной отрисованной странице — она не
+прочитает напрямую срок SSL-сертификата, не измерит время ответа, не распарсит
+`sitemap.xml` и не проверит, заблокирован ли `GPTBot` в `robots.txt`. Этот сервер
+выполняет такие проверки по-настоящему: HTTP-запросы, заголовки, редиректы,
+микроразметка — и даёт **детерминированный** score (тот же сайт → то же число),
+пригодный для отчёта клиенту. Это прибор, а нейросеть — аналитик, который читает
+показания. Лучше всего работает связка.
 
 **Инструменты:** `audit_site` (аудит + score + GEO), `audit_diff` (что
 изменилось с прошлой проверки — stateful PRO), `list_checks` (каталог
@@ -153,7 +157,8 @@ uvx atomno-mcp-seo-audit
 ```
 
 PRO-режим (40+ глубоких проверок, GEO-суб-балл, deep-crawl до 20 страниц):
-добавьте `DETAILWEB_API_KEY` (`dwa_…`) в `env`. Ключ — в кабинете detail.web →
-Аккаунт → API-ключи. Без ключа работает бесплатный тариф (базовые проверки,
-одна страница). Полное описание инструментов и настроек — в английской версии
-выше.
+добавьте `DETAILWEB_API_KEY` (`dwa_…`) в `env`. Ключ создаётся в кабинете
+[audit.detailweb.ru](https://audit.detailweb.ru) → **Аккаунт → API-ключи**
+(полный ключ показывается один раз). Без ключа работает бесплатный тариф
+(базовые проверки, одна страница). Полное описание инструментов и настроек —
+в английской версии выше.
