@@ -2,7 +2,7 @@
 
 All notable changes to this project are documented here.
 
-## [0.3.0] - unreleased
+## [0.3.0] - 2026-06-23
 
 ### Added
 - `explain_issue(check_id, lang)` tool — detailed why-it-matters and how-to-fix
