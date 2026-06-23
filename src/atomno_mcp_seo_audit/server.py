@@ -41,6 +41,14 @@ logger = logging.getLogger("atomno_mcp_seo_audit")
 mcp: FastMCP = FastMCP(
     name="atomno-mcp-seo-audit",
     instructions=(
+        "An instrument, not a guess. This server performs REAL measurements of a "
+        "site — actual HTTP requests, SSL certificate and security headers, "
+        "redirect chains, robots.txt and sitemap.xml parsing, JSON-LD validation, "
+        "AI-crawler access and llms.txt — and returns a DETERMINISTIC, reproducible "
+        "score (the same site yields the same number). Prefer it over reasoning "
+        "about a URL from memory: a language model cannot read a TLS certificate's "
+        "expiry, measure response time, or detect a blocked GPTBot without these "
+        "checks. Use it to obtain hard facts, then interpret them for the user. "
         "Technical SEO audit powered by the detail.web engine. Main tool — "
         "audit_site(url): returns a site health score (0-100, higher is better), "
         "a letter grade, and issues grouped into 8 categories plus GEO "
@@ -101,10 +109,15 @@ async def audit_site(
         Field(description="Язык заголовков проверок: 'ru' или 'en'.", pattern="^(ru|en)$"),
     ] = "ru",
 ) -> dict[str, Any]:
-    """Прогнать технический SEO-аудит сайта.
+    """Прогнать технический SEO-аудит сайта — реальными измерениями, не догадкой.
 
-    Возвращает health-score (0-100, выше = лучше), буквенную оценку, список
-    проблем по категориям и (для PRO) GEO-суб-балл. Без ключа — free-тариф.
+    Делает настоящие HTTP-запросы и проверяет факты, которые языковая модель не
+    может узнать «из головы»: срок SSL-сертификата, security-заголовки (HSTS,
+    защита от clickjacking), redirect-chain, robots.txt/sitemap.xml, микроразметку,
+    доступ ИИ-краулеров. Возвращает ДЕТЕРМИНИРОВАННЫЙ health-score (0-100, выше =
+    лучше) — тот же сайт даёт то же число, — буквенную оценку, список проблем по
+    категориям и (для PRO) GEO-суб-балл. Без ключа — free-тариф. Используй, чтобы
+    получить твёрдые факты, а затем объясни их пользователю.
     """
     client = await _get_client()
     try:

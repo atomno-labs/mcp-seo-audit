@@ -11,6 +11,17 @@ AI agent in Cursor, Claude Desktop or any MCP client — get a health score,
 issues across 8 categories, and a **GEO** (Generative Engine Optimization —
 visibility in AI search) sub-score.
 
+## Why not just ask an LLM to "analyze my site"?
+
+Because a language model **guesses** — it can't read your TLS certificate's
+expiry date, measure response time, parse your `sitemap.xml`, or detect that
+`GPTBot` is blocked in `robots.txt`. Without tools it hallucinates from the URL;
+with browsing it eyeballs one rendered page. This server **measures**: real HTTP
+requests, security headers, redirect chains, structured-data validation — and
+returns a **deterministic** score (same site → same number), reproducible enough
+to put in a client report. Think of it as the instrument; the LLM is the analyst
+that interprets the readout. Best results come from the two together.
+
 ## What you get
 
 - **`audit_site(url, depth=1, lang="ru")`** — one call returns:
@@ -94,3 +105,50 @@ score, grade and the list of issues to fix.
 ## License
 
 MIT © atomno-labs. The open-source client talks to a proprietary hosted backend.
+
+---
+
+## 🇷🇺 На русском
+
+MCP-сервер технического SEO-аудита на движке [detail.web](https://detailweb.ru).
+Запускайте аудит прямо из ИИ-агента (Cursor, Claude Desktop и любой MCP-клиент):
+**health-score**, проблемы по 8 категориям и **GEO**-суб-балл (видимость в
+ИИ-поиске — ChatGPT, Perplexity, AI Overviews).
+
+**Чем отличается от «спросить нейросеть».** Языковая модель *гадает*: она не
+прочитает срок вашего SSL-сертификата, не измерит время ответа, не распарсит
+`sitemap.xml` и не увидит, что `GPTBot` заблокирован в `robots.txt`. Этот сервер
+*измеряет* — настоящие HTTP-запросы, заголовки, редиректы, микроразметка — и даёт
+**детерминированный** score (тот же сайт → то же число), пригодный для отчёта
+клиенту. Это прибор; нейросеть — аналитик, который читает показания. Лучше всего
+работает связка.
+
+**Инструменты:** `audit_site` (аудит + score + GEO), `list_checks` (каталог
+проверок free/PRO), `explain_issue` (почему важно + как исправить),
+`validate_robots`, `check_sitemap`, `build_jsonld`, `build_meta`.
+
+**Установка:**
+
+```bash
+uvx atomno-mcp-seo-audit
+```
+
+В конфиге MCP-клиента (`mcp.json`):
+
+```json
+{
+  "mcpServers": {
+    "seo-audit": {
+      "command": "uvx",
+      "args": ["atomno-mcp-seo-audit"],
+      "env": { "DETAILWEB_LANG": "ru" }
+    }
+  }
+}
+```
+
+PRO-режим (40+ глубоких проверок, GEO-суб-балл, deep-crawl до 20 страниц):
+добавьте `DETAILWEB_API_KEY` (`dwa_…`) в `env`. Ключ — в кабинете detail.web →
+Аккаунт → API-ключи. Без ключа работает бесплатный тариф (базовые проверки,
+одна страница). Полное описание инструментов и настроек — в английской версии
+выше.

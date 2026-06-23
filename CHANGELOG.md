@@ -2,6 +2,20 @@
 
 All notable changes to this project are documented here.
 
+## [Unreleased]
+
+### Changed
+- Positioning «instrument, not a guess»: server `instructions` and the
+  `audit_site` description now make explicit that the engine performs real
+  measurements (SSL, headers, robots/sitemap, structured data) and returns a
+  deterministic score — vs an LLM guessing about a URL.
+- README: added "Why not just ask an LLM?" section + a condensed Russian
+  (`🇷🇺 На русском`) section for RU users.
+
+### Planned
+- Stateful monitoring (`watch_site` + alerts, idea I-4) — see
+  `_knowledge/specs/monitoring.md`.
+
 ## [0.3.0] - 2026-06-23
 
 ### Added
