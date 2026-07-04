@@ -1,3 +1,5 @@
+<!-- mcp-name: io.github.atomno-labs/mcp-seo-audit -->
+
 # atomno-mcp-seo-audit
 
 [![PyPI](https://img.shields.io/pypi/v/atomno-mcp-seo-audit)](https://pypi.org/project/atomno-mcp-seo-audit/)

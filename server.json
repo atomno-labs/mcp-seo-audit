@@ -1,0 +1,28 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.atomno-labs/mcp-seo-audit",
+  "description": "Technical SEO + GEO audit for any site from your AI agent — real measurements, not LLM guesses. Eight tools on the detail.web engine: audit_site (0–100 health score + GEO sub-score), audit_diff, robots/sitemap validators, JSON-LD & meta builders. Free tier + PRO (40+ checks).",
+  "repository": {
+    "url": "https://github.com/atomno-labs/mcp-seo-audit",
+    "source": "github"
+  },
+  "version": "0.4.1",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "registryBaseUrl": "https://pypi.org",
+      "identifier": "atomno-mcp-seo-audit",
+      "version": "0.4.1",
+      "runtimeHint": "uvx",
+      "transport": { "type": "stdio" },
+      "environmentVariables": [
+        {
+          "name": "DETAILWEB_API_KEY",
+          "description": "PRO API key (dwa_...) for deep-crawl, GEO readiness and 40+ checks. Without it — free tier.",
+          "isRequired": false,
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}
