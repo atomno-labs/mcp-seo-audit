@@ -5,11 +5,15 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![MCP](https://img.shields.io/badge/MCP-server-blue)](https://modelcontextprotocol.io)
 
-MCP (Model Context Protocol) server for **technical SEO audits**, powered by the
-[detail.web](https://audit.detailweb.ru) engine. Run a site audit straight from
-your AI agent in Cursor, Claude Desktop or any MCP client — get a health score,
-issues across 8 categories, and a **GEO** (Generative Engine Optimization —
-visibility in AI search) sub-score.
+MCP (Model Context Protocol) server for **technical SEO & GEO audits**, powered by
+the [detail.web](https://audit.detailweb.ru) engine — **real measurements, not LLM
+guesses**. Run it from Cursor, Claude Desktop or any MCP client. **8 tools:**
+`audit_site` (deterministic `0–100` health score + letter grade, 78 checks across
+8 categories, plus a **GEO** sub-score — visibility in ChatGPT / Perplexity /
+Google AI Overviews), `audit_diff` (compare vs the previous snapshot),
+`robots.txt` & `sitemap.xml` validators, JSON-LD & meta/OpenGraph builders, and
+per-check fix explainers. Probes TLS, redirects, TTFB, AI-crawler access (GPTBot)
+and `llms.txt`. Free tier + **PRO** (deep-crawl, GEO, 40+ deeper checks).
 
 ## Why pair it with an LLM?
 
