@@ -1,4 +1,4 @@
-<!-- mcp-name: io.github.atomno-labs/mcp-seo-audit -->
+<!-- mcp-name: io.github.atomno-mcp/mcp-seo-audit -->
 
 # atomno-mcp-seo-audit
 

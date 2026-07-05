@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## [0.4.2] - 2026-07-05
+
+### Changed
+
+- GitHub-организация переименована `atomno-labs` → `atomno-mcp`; обновлены ссылки на репозиторий и MCP-реестр (`pyproject.toml`, `server.json`, `README`, workflow публикации).
+
 ## [0.4.0] - 2026-06-23
 
 ### Added

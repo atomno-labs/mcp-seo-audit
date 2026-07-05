@@ -1,9 +1,9 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.atomno-labs/mcp-seo-audit",
+  "name": "io.github.atomno-mcp/mcp-seo-audit",
   "description": "Technical SEO site audit MCP: health score, issues, robots, sitemap, JSON-LD.",
   "repository": {
-    "url": "https://github.com/atomno-labs/mcp-seo-audit",
+    "url": "https://github.com/atomno-mcp/mcp-seo-audit",
     "source": "github"
   },
   "version": "0.4.1",
