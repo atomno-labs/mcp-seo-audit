@@ -119,7 +119,7 @@ score, grade and the list of issues to fix.
 
 ## License
 
-MIT © atomno-labs. The open-source client talks to a proprietary hosted backend.
+MIT © atomno-mcp. The open-source client talks to a proprietary hosted backend.
 
 ---
 
