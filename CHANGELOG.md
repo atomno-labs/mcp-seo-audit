@@ -2,6 +2,14 @@
 
 All notable changes to this project are documented here.
 
+## [Unreleased]
+
+## [0.4.3] - 2026-07-06
+
+### Changed
+
+- Updated PyPI package metadata: author and contact email now use the `atomno-mcp` brand (`hello@atomno-mcp.ru`).
+
 ## [0.4.2] - 2026-07-05
 
 ### Changed
