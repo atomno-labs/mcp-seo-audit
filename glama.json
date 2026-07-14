@@ -1,4 +1,8 @@
 {
   "$schema": "https://glama.ai/mcp/schemas/server.json",
-  "maintainers": ["atomnos"]
+  "maintainers": [
+    "atomnos"
+  ],
+  "name": "mcp-seo-audit",
+  "description": "Technical SEO site audit MCP: health score, issues, robots, sitemap, JSON-LD."
 }
