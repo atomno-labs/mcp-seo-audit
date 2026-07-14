@@ -1,18 +1,19 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "mcp-seo-audit",
+  "name": "io.github.atomno-mcp/mcp-seo-audit",
+  "title": "mcp-seo-audit",
   "description": "Technical SEO site audit MCP: health score, issues, robots, sitemap, JSON-LD.",
   "repository": {
     "url": "https://github.com/atomno-mcp/mcp-seo-audit",
     "source": "github"
   },
-  "version": "0.4.5",
+  "version": "0.4.7",
   "packages": [
     {
       "registryType": "pypi",
       "registryBaseUrl": "https://pypi.org",
       "identifier": "atomno-mcp-seo-audit",
-      "version": "0.4.5",
+      "version": "0.4.7",
       "runtimeHint": "uvx",
       "transport": {
         "type": "stdio"
