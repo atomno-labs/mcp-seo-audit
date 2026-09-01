@@ -2,7 +2,7 @@
 
 Все настройки — через env, чтобы клиент оставался stateless и тонким:
     DETAILWEB_API_BASE   — базовый URL бэкенда (default: публичный прод).
-    DETAILWEB_API_KEY    — опц. PRO-ключ (формат dwa_...). Без него — free-режим.
+    DETAILWEB_API_KEY    — опц. ключ PRO+ и выше (формат dwa_...). Без него или на Free/PRO — free-режим.
     DETAILWEB_TIMEOUT     — таймаут HTTP в секундах (default 60).
     DETAILWEB_LANG        — язык заголовков по умолчанию: ru | en (default ru).
 """

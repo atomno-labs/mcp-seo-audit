@@ -91,7 +91,7 @@ def format_diff(resp: dict[str, Any], *, lang: str = "ru") -> dict[str, Any]:
     lines: list[str] = []
 
     if not resp.get("available"):
-        lines.append(resp.get("upsell") or ("Diff requires a PRO key." if en else "Дифф требует PRO-ключ."))
+        lines.append(resp.get("upsell") or ("Diff needs a PRO+ key." if en else "Дифф требует ключ PRO+."))
         result["summary_text"] = "\n".join(lines)
         return result
 

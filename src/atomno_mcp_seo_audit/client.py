@@ -61,7 +61,7 @@ class DetailWebClient:
             raise BackendError(resp.status_code, "invalid JSON in response") from exc
 
     async def audit(self, url: str, *, depth: int = 1, lang: str | None = None) -> dict[str, Any]:
-        """POST /audit. Без ключа — free, с PRO-ключом — pro (GEO + deep-crawl)."""
+        """POST /audit. Без ключа или Free/PRO — free; ключ PRO+ и выше — pro (GEO + deep-crawl)."""
         payload: dict[str, Any] = {
             "url": url,
             "depth": depth,
@@ -70,7 +70,7 @@ class DetailWebClient:
         return await self._post("/audit", payload)
 
     async def audit_diff(self, url: str, *, lang: str | None = None) -> dict[str, Any]:
-        """POST /audit/diff — что изменилось с прошлой проверки (stateful, PRO)."""
+        """POST /audit/diff — что изменилось с прошлой проверки (stateful, PRO+)."""
         payload = {"url": url, "lang": lang or self._settings.lang}
         return await self._post("/audit/diff", payload)
 

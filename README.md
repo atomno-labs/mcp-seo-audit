@@ -15,7 +15,8 @@ guesses**. Run it from Cursor, Claude Desktop or any MCP client. **8 tools:**
 Google AI Overviews), `audit_diff` (compare vs the previous snapshot),
 `robots.txt` & `sitemap.xml` validators, JSON-LD & meta/OpenGraph builders, and
 per-check fix explainers. Probes TLS, redirects, TTFB, AI-crawler access (GPTBot)
-and `llms.txt`. Free tier + **PRO** (deep-crawl, GEO, 40+ deeper checks).
+and `llms.txt`. Free tier + **PRO+** (deep-crawl, GEO, 40+ deeper checks) — API
+keys unlock the deeper engine on the **PRO+** plan and up (see [Free vs PRO+](#free-vs-pro)).
 
 ## Why pair it with an LLM?
 
@@ -38,7 +39,8 @@ interprets the readout — the two work best together.
 - **`audit_diff(url, lang="ru")`** — re-audits a site and compares it to the
   previous run: health/score delta and which checks got worse or better. The
   first call stores a baseline. This is something a one-off LLM question can't
-  do — track a site over time. Stateful **PRO** feature (needs an API key).
+  do — track a site over time. Stateful feature — needs a key on the **PRO+**
+  plan or higher.
 - **`list_checks(lang="ru")`** — the full catalogue of engine checks grouped by
   category, with a `free` / `PRO` badge on each — so you (and the agent) can see
   exactly what the free tier covers and what PRO unlocks.
@@ -62,13 +64,19 @@ interprets the readout — the two work best together.
   description, canonical, Open Graph, Twitter Card) and validates the title
   (50–60 chars) and description (120–160 chars) lengths.
 
-### Free vs PRO
+### Free vs PRO+
 
-| | Free (no key) | PRO (with API key) |
+| | Free (no key) | PRO+ and up (API key) |
 |---|---|---|
 | Checks | core technical basics | 40+ deeper checks (E-E-A-T, Schema.org, Goldmine title) |
 | GEO | 4 GEO signals | GEO readiness sub-score + deep GEO checks |
 | Crawl | single page | deep-crawl up to 20 pages (`depth=2/3`) |
+
+> **Which plan unlocks the API/MCP?** Programmatic access (this server, `audit_diff`,
+> deep-crawl, GEO sub-score) is enabled on **PRO+** (`pro_plus`), **Business** and
+> **Enterprise**. The entry-level **PRO** plan and the Free tier are web-dashboard
+> only — an API key issued on them authenticates but still returns the **free**
+> result. If you need programmatic access, pick **PRO+** or higher.
 
 The audit engine itself stays on the server — this package is a thin client
 (HTTP calls + formatting only).
@@ -99,13 +107,15 @@ All via environment variables:
 | Variable | Default | Purpose |
 |---|---|---|
 | `DETAILWEB_API_BASE` | `https://api.detailweb.ru` | Backend base URL |
-| `DETAILWEB_API_KEY` | — | PRO key (`dwa_...`). Without it → free tier |
+| `DETAILWEB_API_KEY` | — | API key (`dwa_...`) from a **PRO+** plan or higher. Without it (or on Free/PRO) → free tier |
 | `DETAILWEB_TIMEOUT` | `60` | HTTP timeout (seconds) |
 | `DETAILWEB_LANG` | `ru` | Default issue-title language (`ru` / `en`) |
 
-**The free tier needs no key and no signup** — just run the command above. The
-**PRO** tier (40+ deeper checks, GEO sub-score, deep-crawl, `audit_diff`) is
-currently provisioned on request: email **kir@detailweb.ru** or reach out via
+**The free tier needs no key and no signup** — just run the command above.
+Programmatic access (40+ deeper checks, GEO sub-score, deep-crawl, `audit_diff`)
+requires a key from the **PRO+** plan or higher — the entry-level **PRO** plan is
+web-dashboard only and its key returns the free result. It is currently
+provisioned on request: email **kir@detailweb.ru** or reach out via
 [audit.detailweb.ru](https://audit.detailweb.ru). Once your account is active you
 create keys yourself in **Dashboard → Account → API keys** (`dwa_…`, shown once)
 and put the key in `DETAILWEB_API_KEY`.
@@ -141,7 +151,7 @@ AI Overviews).
 показания. Лучше всего работает связка.
 
 **Инструменты:** `audit_site` (аудит + score + GEO), `audit_diff` (что
-изменилось с прошлой проверки — stateful PRO), `list_checks` (каталог
+изменилось с прошлой проверки — stateful, тариф PRO+ и выше), `list_checks` (каталог
 проверок free/PRO), `explain_issue` (почему важно + как исправить),
 `validate_robots`, `check_sitemap`, `build_jsonld`, `build_meta`.
 
@@ -166,8 +176,11 @@ uvx atomno-mcp-seo-audit
 ```
 
 Бесплатный тариф (базовые проверки, одна страница) работает **сразу, без ключа
-и регистрации**. PRO-режим (40+ глубоких проверок, GEO-суб-балл, deep-crawl до
-20 страниц, `audit_diff`) пока выдаём по запросу: напишите на
+и регистрации**. Программный доступ (40+ глубоких проверок, GEO-суб-балл,
+deep-crawl до 20 страниц, `audit_diff`) работает с ключом тарифа **PRO+**
+(`pro_plus`) и выше — **Business**, **Enterprise**. Начальный тариф **PRO**
+(1290 ₽) и Free — только веб-кабинет: ключ на них проходит авторизацию, но
+результат остаётся бесплатным. Тариф пока выдаём по запросу: напишите на
 **kir@detailweb.ru** или через [audit.detailweb.ru](https://audit.detailweb.ru).
 После активации аккаунта ключ (`dwa_…`) создаётся в кабинете → **Аккаунт →
 API-ключи** (показывается один раз) и подставляется в `DETAILWEB_API_KEY` в

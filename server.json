@@ -7,13 +7,13 @@
     "url": "https://github.com/atomno-mcp/mcp-seo-audit",
     "source": "github"
   },
-  "version": "0.4.7",
+  "version": "0.4.8",
   "packages": [
     {
       "registryType": "pypi",
       "registryBaseUrl": "https://pypi.org",
       "identifier": "atomno-mcp-seo-audit",
-      "version": "0.4.7",
+      "version": "0.4.8",
       "runtimeHint": "uvx",
       "transport": {
         "type": "stdio"
@@ -21,7 +21,7 @@
       "environmentVariables": [
         {
           "name": "DETAILWEB_API_KEY",
-          "description": "PRO API key (dwa_...) for deep-crawl, GEO readiness and 40+ checks. Without it — free tier.",
+          "description": "API key (dwa_...) from PRO+ or higher. Free/PRO keys still return the free result.",
           "isRequired": false,
           "isSecret": true
         }

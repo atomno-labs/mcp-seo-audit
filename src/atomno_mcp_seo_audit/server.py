@@ -1,14 +1,15 @@
 """FastMCP entrypoint для atomno-mcp-seo-audit.
 
 Тулзы поверх публичного API `https://api.detailweb.ru`:
-  - audit_site(url, depth, lang) — технический SEO-аудит (free / PRO по ключу);
-  - audit_diff(url, lang) — что изменилось с прошлой проверки (stateful, PRO);
+  - audit_site(url, depth, lang) — технический SEO-аудит (free / PRO+ по ключу);
+  - audit_diff(url, lang) — что изменилось с прошлой проверки (stateful, PRO+);
   - list_checks(lang) — реестр проверок free/PRO по категориям;
   - explain_issue(check_id, lang) — почему важно + как исправить одну проверку;
   - validate_robots / check_sitemap / build_jsonld / build_meta — точечные тулзы.
 
-Без ключа — free-результат; с PRO-ключом в env (`DETAILWEB_API_KEY`) — полный
-аудит + GEO-суб-балл + deep-crawl. Клиент тонкий: вся логика — на бэкенде.
+Без ключа или с ключом Free/PRO — free-результат; ключ PRO+ и выше
+(`DETAILWEB_API_KEY`) открывает полный аудит + GEO-суб-балл + deep-crawl.
+Клиент тонкий: вся логика — на бэкенде.
 См. _knowledge/specs/spec.md.
 """
 
@@ -55,14 +56,14 @@ mcp: FastMCP = FastMCP(
         "audit_site(url): returns a site health score (0-100, higher is better), "
         "a letter grade, and issues grouped into 8 categories plus GEO "
         "(Generative Engine Optimization — visibility in AI search like ChatGPT, "
-        "Perplexity, Google AI Overviews). Without an API key you get the free "
-        "tier (core checks, single page). With a detail.web API key "
-        "(DETAILWEB_API_KEY env) you get the PRO tier: 40+ deeper checks "
-        "(E-E-A-T, Schema.org, Goldmine title), the GEO readiness sub-score and "
-        "deep-crawl up to 20 pages. Use lang='en' or lang='ru' for issue titles. "
+        "Perplexity, Google AI Overviews). Without a key — free tier (core "
+        "checks, single page). A DETAILWEB_API_KEY from PRO+ or higher unlocks "
+        "40+ deeper checks (E-E-A-T, Schema.org, Goldmine title), GEO readiness "
+        "and deep-crawl up to 20 pages. A key on Free or entry-level PRO still "
+        "returns the free result. Use lang='en' or lang='ru' for issue titles. "
         "audit_diff(url) re-audits a site and compares it to the previous saved "
         "snapshot (health/score delta, which checks got worse or better) — a "
-        "stateful PRO feature that a one-off LLM question cannot replicate. "
+        "stateful PRO+ feature that a one-off LLM question cannot replicate. "
         "Other tools: list_checks() shows the full free/PRO check catalogue by "
         "category; explain_issue(check_id) returns a detailed why-it-matters and "
         "how-to-fix for a single check (ids come from audit_site or list_checks); "
@@ -107,7 +108,7 @@ async def audit_site(
     url: Annotated[str, Field(description="Полный URL сайта, например https://example.ru")],
     depth: Annotated[
         int,
-        Field(ge=1, le=3, description="Глубина: 1=одна страница, 2=≈8 стр, 3=≈20 стр (deep — только PRO)."),
+        Field(ge=1, le=3, description="Глубина: 1=одна страница, 2=≈8 стр, 3=≈20 стр (deep — только PRO+)."),
     ] = 1,
     lang: Annotated[
         str,
@@ -121,8 +122,8 @@ async def audit_site(
     защита от clickjacking), redirect-chain, robots.txt/sitemap.xml, микроразметку,
     доступ ИИ-краулеров. Возвращает ДЕТЕРМИНИРОВАННЫЙ health-score (0-100, выше =
     лучше) — тот же сайт даёт то же число, — буквенную оценку, список проблем по
-    категориям и (для PRO) GEO-суб-балл. Без ключа — free-тариф. Используй, чтобы
-    получить твёрдые факты, а затем объясни их пользователю.
+    категориям и (на PRO+) GEO-суб-балл. Без ключа или на Free/PRO — free-результат.
+    Используй, чтобы получить твёрдые факты, а затем объясни их пользователю.
     """
     client = await _get_client()
     try:
@@ -146,8 +147,8 @@ async def audit_diff(
     Прогоняет свежий аудит и сопоставляет с предыдущим сохранённым снимком того
     же URL: дельта health/score и какие именно проверки стали хуже/лучше. Это то,
     чего разовый вопрос к LLM не умеет — отслеживание сайта во времени. Первый
-    вызов сохраняет базовую точку (сравнивать ещё не с чем). Stateful PRO-функция:
-    нужен DETAILWEB_API_KEY — без него available=false и подсказка про PRO.
+    вызов сохраняет базовую точку (сравнивать ещё не с чем). Stateful-функция PRO+:
+    нужен ключ PRO+ в DETAILWEB_API_KEY — иначе available=false.
     """
     client = await _get_client()
     try:
@@ -167,7 +168,7 @@ async def list_checks(
 ) -> dict[str, Any]:
     """Список всех проверок движка с разбивкой free/PRO по категориям.
 
-    Помогает понять, что входит в бесплатный тариф, а что — только в PRO,
+    Помогает понять, что в бесплатном результате, а что открывается ключом PRO+,
     и какие категории покрывает движок (security, SEO, GEO, E-E-A-T и т.д.).
     """
     client = await _get_client()
